@@ -15,6 +15,16 @@ import java.util.stream.Collectors;
 public class Selvet extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String path = req.getServletPath();
+        if (Objects.equals(path, "/search")){ //cannot compare use '=='
+            resp.setContentType("text/html");
+            resp.getWriter().write("<h1>Hello, world!<h1>");
+        }
+        else resp.getWriter().write(path);
+    }
+
+    @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String reqBody=req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Gson gson = new Gson();
