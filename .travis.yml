@@ -1,0 +1,17 @@
+language: java
+before_install:
+          - chmod +x gradlew
+script:
+  - ./gradlew build --info
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+directories:
+       - $HOME/.gradle/caches/
+       - $HOME/.gradle/wrapper/
+deploy:
+  provider: heroku
+  api_key: 8f23b8c6-6f59-4fa5-b5f2-960721fb3bea
+  app: dbservlet
+  skip_cleanup: true
