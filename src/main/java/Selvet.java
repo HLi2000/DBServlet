@@ -33,18 +33,18 @@ public class Selvet extends HttpServlet {
         Gson gson = new Gson();
         Img img=gson.fromJson(reqBody,Img.class);
 
-        //String dbUrl = System.getenv("JDBC_DATABASE_URL");
-
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        /*
         URI dbUri = null;
         try {
             dbUri = new URI(System.getenv("DATABASE_URL"));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
+        */
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -55,8 +55,8 @@ public class Selvet extends HttpServlet {
         Img img2=new Img();
         img2.setUrl(dbUrl);
         try {
-            //Connection con = DriverManager.getConnection(dbUrl);
-            Connection con = DriverManager.getConnection(dbUrl, username, password);
+            Connection con = DriverManager.getConnection(dbUrl);
+            //Connection con = DriverManager.getConnection(dbUrl, username, password);
             /*
             String sql = "SELECT * FROM imgs WHERE modality=?";
             PreparedStatement psmt = con.prepareStatement(sql);
