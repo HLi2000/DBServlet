@@ -1,9 +1,9 @@
 import java.io.Serializable;
 
 public class Img implements Serializable {
-    private String id="";
-    private String region="";
+    private int id=0;
     private String modality="";
+    private String region="";
     private String url="";
 
 //    public Img(String id, String region, String modality, String url){
@@ -13,7 +13,7 @@ public class Img implements Serializable {
 //        this.url=url;
 //    }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -29,7 +29,7 @@ public class Img implements Serializable {
         return url;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.sql.*;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -30,10 +31,34 @@ public class Selvet extends HttpServlet {
         Gson gson = new Gson();
         Img img=gson.fromJson(reqBody,Img.class);
 
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+
+        try {
+            // Registers the driver
+            Class.forName("org.postgresql.Driver");
+        }
+        catch (Exception e) {
+        }
 
         Img img2=new Img();
-        img2.setModality("CTT");
-
+        try {
+            Connection con = DriverManager.getConnection(dbUrl);
+            String sql = "SELECT * FROM imgs WHERE modality=?;";
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setString(1, img.getModality());
+            ResultSet rs=psmt.executeQuery(sql);
+            while(rs.next()){
+                img2.setId(rs.getInt("id"));
+                img2.setModality(rs.getString("modality"));
+                img2.setRegion(rs.getString("region"));
+                img2.setUrl(rs.getString("url"));
+            }
+            rs.close();
+            psmt.close();
+            con.close();
+        }
+        catch (Exception e){
+        }
 
         resp.setContentType("application/json");
         Gson gson2 = new Gson();
