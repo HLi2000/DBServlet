@@ -34,7 +34,6 @@ public class Selvet extends HttpServlet {
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
 
         try {
-            // Registers the driver
             Class.forName("org.postgresql.Driver");
         }
         catch (Exception e) {
@@ -43,10 +42,10 @@ public class Selvet extends HttpServlet {
         Img img2=new Img();
         try {
             Connection con = DriverManager.getConnection(dbUrl);
-            String sql = "SELECT * FROM imgs WHERE modality=?;";
+            String sql = "SELECT * FROM imgs WHERE modality = ?;";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, img.getModality());
-            ResultSet rs=psmt.executeQuery(sql);
+            ResultSet rs=psmt.executeQuery();
             while(rs.next()){
                 img2.setId(rs.getInt("id"));
                 img2.setModality(rs.getString("modality"));
@@ -56,8 +55,8 @@ public class Selvet extends HttpServlet {
             rs.close();
             psmt.close();
             con.close();
-        }
-        catch (Exception e){
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
 
         resp.setContentType("application/json");
