@@ -55,6 +55,7 @@ public class Selvet extends HttpServlet {
         Img img2=new Img();
         img2.setUrl(dbUrl);
         try {
+            img2.setUrl("1111");
             Connection con = DriverManager.getConnection(dbUrl);
             //Connection con = DriverManager.getConnection(dbUrl, username, password);
             String sql = "SELECT * FROM imgs WHERE modality=?";
@@ -70,7 +71,6 @@ public class Selvet extends HttpServlet {
             rs.close();
             psmt.close();
             con.close();
-            img2.setUrl("1111");
         } catch (SQLException throwables) {
         }
 
