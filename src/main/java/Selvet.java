@@ -40,6 +40,7 @@ public class Selvet extends HttpServlet {
         }
 
         Img img2=new Img();
+        img2.setUrl(dbUrl);
         Connection con;
         try {
             con = DriverManager.getConnection(dbUrl);
@@ -57,7 +58,6 @@ public class Selvet extends HttpServlet {
             psmt.close();
             con.close();
         } catch (SQLException throwables) {
-            img2.setUrl(dbUrl);
         }
 
         resp.setContentType("application/json");
