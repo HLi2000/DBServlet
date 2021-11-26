@@ -42,7 +42,7 @@ public class Selvet extends HttpServlet {
         Img img2=new Img();
         try {
             Connection con = DriverManager.getConnection(dbUrl);
-            String sql = "SELECT * FROM imgs WHERE modality = ?;";
+            String sql = "SELECT * FROM imgs WHERE modality=?";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, img.getModality());
             ResultSet rs=psmt.executeQuery();
