@@ -59,14 +59,14 @@ public class Selvet extends HttpServlet {
                 String region_s;
 
                 if (modality_a.length==0){
-                    modality_s="'MRI','CT','US'";
+                    modality_s="'MRI','CT','US','Xray'";
                 }
                 else {
                     modality_s = "'"+String.join("','", modality_a)+"'";
                 }
 
                 if (region_a.length==0){
-                    region_s="'Brain','Chest'";
+                    region_s="'Brain','Chest','Angiogram";
                 }
                 else {
                     region_s = "'"+String.join("','", region_a)+"'";
@@ -95,8 +95,9 @@ public class Selvet extends HttpServlet {
                     img.setId(rs.getInt("id"));
                     img.setModality(rs.getString("modality"));
                     img.setRegion(rs.getString("region"));
-                    img.setFilename(rs.getString("filename"));
-                    check_t(img.getFilename());
+                    img.setPatient_name(rs.getString("patient_name"));
+                    img.setFile_name(rs.getString("file_name"));
+                    check_t(img.getFile_name());
                     img_l.add(img);
                 }
                 rs.close();

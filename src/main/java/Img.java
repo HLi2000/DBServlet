@@ -5,13 +5,13 @@ public class Img implements Serializable {
     private String modality="";
     private String region="";
     private String patient_name="";
-    private String filename="";
+    private String file_name="";
 
-//    public Img(String id, String region, String modality, String filename){
+//    public Img(String id, String region, String modality, String file_name){
 //        this.id=id;
 //        this.region=region;
 //        this.modality=modality;
-//        this.filename=filename;
+//        this.file_name=file_name;
 //    }
 
     public int getId() {
@@ -30,8 +30,8 @@ public class Img implements Serializable {
         return patient_name;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFile_name() {
+        return file_name;
     }
 
     public void setId(int id) {
@@ -50,7 +50,7 @@ public class Img implements Serializable {
         this.patient_name = patient_name;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setFile_name(String file_name) {
+        this.file_name = file_name;
     }
 }
