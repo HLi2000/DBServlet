@@ -6,7 +6,6 @@ import ij.io.*;
 import ij.process.ImageProcessor;
 import ij.process.StackProcessor;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +17,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/search","/thumbnail","/img"},loadOnStartup = 1)
@@ -37,7 +35,7 @@ public class Selvet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
-        if (path=="/search") {
+        if (path.equals("/search")) {
             String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             Gson gson = new Gson();
             SearchInfo searchInfo = gson.fromJson(reqBody, SearchInfo.class);
@@ -74,7 +72,7 @@ public class Selvet extends HttpServlet {
                     region_s = "'"+String.join("','", region_a)+"'";
                 }
 
-                if (patient_name==""){
+                if (patient_name.equals("")){
                     String sql = "SELECT * FROM imgs WHERE modality IN (?) AND region IN (?)";
                     PreparedStatement psmt = con.prepareStatement(sql);
                     psmt.setString(1, modality_s);
@@ -112,10 +110,10 @@ public class Selvet extends HttpServlet {
             String jsonString = gson2.toJson(img_a);
             resp.getWriter().write(jsonString);
         }
-        else if (path=="/thumbnail") {
+        else if (path.equals("/thumbnail")) {
 
         }
-        else if (path=="/img") {
+        else if (path.equals("/img")) {
 
         }
     }
