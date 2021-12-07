@@ -4,13 +4,14 @@ public class Img implements Serializable {
     private int id=0;
     private String modality="";
     private String region="";
-    private String url="";
+    private String patient_name="";
+    private String filename="";
 
-//    public Img(String id, String region, String modality, String url){
+//    public Img(String id, String region, String modality, String filename){
 //        this.id=id;
 //        this.region=region;
 //        this.modality=modality;
-//        this.url=url;
+//        this.filename=filename;
 //    }
 
     public int getId() {
@@ -25,8 +26,12 @@ public class Img implements Serializable {
         return region;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPatient_name() {
+        return patient_name;
+    }
+
+    public String getFilename() {
+        return filename;
     }
 
     public void setId(int id) {
@@ -41,7 +46,11 @@ public class Img implements Serializable {
         this.region = region;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPatient_name(String patient_name) {
+        this.patient_name = patient_name;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }
