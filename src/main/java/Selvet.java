@@ -7,17 +7,20 @@ import ij.process.ImageProcessor;
 import ij.process.StackProcessor;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static ij.plugin.FFT.fileName;
 
 @WebServlet(urlPatterns = {"/search","/thumbnail","/img"},loadOnStartup = 1)
 public class Selvet extends HttpServlet {
@@ -81,7 +84,7 @@ public class Selvet extends HttpServlet {
                     psmt.close();
                 }
                 else{
-                    String sql = "SELECT * FROM imgs WHERE modality IN ('MRI','CT','US','Xray') AND region IN ('Brain','Chest','Angiogram') AND patiet_name='A A'";
+                    String sql = "SELECT * FROM imgs WHERE modality IN ('MRI','CT','US','Xray') AND region IN ('Brain','Chest','Angiogram') AND patient_name='A A'";
                     PreparedStatement psmt = con.prepareStatement(sql);
                     //psmt.setString(1, modality_s);
                     //psmt.setString(1, "'MRI','CT','US','Xray'");
@@ -91,6 +94,16 @@ public class Selvet extends HttpServlet {
                     rs = psmt.executeQuery();
                     psmt.close();
                 }
+
+                String sql = "SELECT * FROM imgs WHERE modality IN ('MRI','CT','US','Xray') AND region IN ('Brain','Chest','Angiogram') AND patient_name='A A'";
+                PreparedStatement psmt = con.prepareStatement(sql);
+                //psmt.setString(1, modality_s);
+                //psmt.setString(1, "'MRI','CT','US','Xray'");
+                //psmt.setString(2, region_s);
+                //psmt.setString(2, "'Brain','Chest','Angiogram'");
+                //psmt.setString(3, patient_name);
+                rs = psmt.executeQuery();
+                psmt.close();
 
                 while (rs.next()) {
                     Img img=new Img();
@@ -122,7 +135,40 @@ public class Selvet extends HttpServlet {
         }
         else if (path.equals("/thumbnail")) {
             String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            StringBuffer filePath = new StringBuffer(reqBody);
+            filePath.replace(filePath.lastIndexOf("."),
+                    filePath.length(), ".jpg");
+            String fileName = filePath.toString();
+            String FilePath="./img_ts/"+fileName;
 
+            //制定浏览器头
+            //在下载的时候这里是英文是没有问题的
+            resp.setHeader("content-disposition", "attachment;fileName="+fileName);
+            //如果图片名称是中文需要设置转码
+            resp.setHeader("content-disposition", "attachment;fileName="+ URLEncoder.encode(fileName, "UTF-8"));
+            InputStream reader = null;
+            OutputStream out = null;
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            try {
+                // 读取文件
+                reader = new FileInputStream(FilePath);
+                // 写入浏览器的输出流
+                out = resp.getOutputStream();
+
+                while ((len = reader.read(bytes)) > 0) {
+                    out.write(bytes, 0, len);
+                }
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (out != null)
+                    out.close();
+            }
         }
         else if (path.equals("/img")) {
 
