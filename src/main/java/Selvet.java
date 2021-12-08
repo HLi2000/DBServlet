@@ -7,20 +7,16 @@ import ij.process.ImageProcessor;
 import ij.process.StackProcessor;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLEncoder;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static ij.plugin.FFT.fileName;
 
 @WebServlet(urlPatterns = {"/search","/thumbnail","/img"},loadOnStartup = 1)
 public class Selvet extends HttpServlet {
@@ -100,6 +96,8 @@ public class Selvet extends HttpServlet {
 
                  */
 
+                /*
+
                 String sql = "SELECT * FROM imgs WHERE Patient_name=?";
                 PreparedStatement psmt = con.prepareStatement(sql);
                 //psmt.setString(1, modality_s);
@@ -127,6 +125,8 @@ public class Selvet extends HttpServlet {
 
                 rs.close();
                 con.close();
+
+                 */
             } catch (SQLException throwables) {
                 Img img2=new Img();
                 img2.setFile_name("!");
@@ -178,7 +178,38 @@ public class Selvet extends HttpServlet {
             }
         }
         else if (path.equals("/img")) {
+            String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            StringBuffer filePath = new StringBuffer(reqBody);
+            filePath.replace(filePath.lastIndexOf("."),
+                    filePath.length(), ".jpg");
+            String fileName = filePath.toString();
+            String FilePath="./imgs/"+fileName;
 
+            //制定浏览器头
+            resp.setHeader("content-disposition", "attachment;fileName="+fileName);
+
+            InputStream reader = null;
+            OutputStream out = null;
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            try {
+                // 读取文件
+                reader = new FileInputStream(FilePath);
+                // 写入浏览器的输出流
+                out = resp.getOutputStream();
+
+                while ((len = reader.read(bytes)) > 0) {
+                    out.write(bytes, 0, len);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (out != null)
+                    out.close();
+            }
         }
     }
 
