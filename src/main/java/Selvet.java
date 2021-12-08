@@ -102,7 +102,7 @@ public class Selvet extends HttpServlet {
                     check_t(img.getFile_name());
                     //img_l.add(img);
                     Img img2=new Img();
-                    img2.setFile_name("file_name");
+                    img2.setFile_name("file_name1");
                     img_l.add(img2);
                 }
                 rs.close();
@@ -121,6 +121,7 @@ public class Selvet extends HttpServlet {
             resp.getWriter().write(jsonString);
         }
         else if (path.equals("/thumbnail")) {
+            String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
         }
         else if (path.equals("/img")) {
