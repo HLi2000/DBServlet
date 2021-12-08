@@ -84,8 +84,8 @@ public class Selvet extends HttpServlet {
                     psmt.close();
                 }
                 else{
-                    String sql = "SELECT * FROM imgs WHERE Modality IN ('MRI','CT','US','Xray') AND Region IN ('Brain','Chest','Angiogram') AND Patient_name=?";
-                    //String sql = "SELECT * FROM imgs WHERE Patient_name=?";
+                    //String sql = "SELECT * FROM imgs WHERE Modality IN ('MRI','CT','US','Xray') AND Region IN ('Brain','Chest','Angiogram') AND Patient_name=?";
+                    String sql = "SELECT * FROM imgs WHERE Patient_name=?";
                     PreparedStatement psmt = con.prepareStatement(sql);
                     //psmt.setString(1, modality_s);
                     //psmt.setString(1, "'MRI','CT','US','Xray'");
