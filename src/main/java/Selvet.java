@@ -95,13 +95,13 @@ public class Selvet extends HttpServlet {
                     psmt.close();
                 }
 
-                String sql = "SELECT * FROM imgs WHERE patient_name='A A'";
+                String sql = "SELECT * FROM imgs WHERE patient_name=?";
                 PreparedStatement psmt = con.prepareStatement(sql);
                 //psmt.setString(1, modality_s);
                 //psmt.setString(1, "'MRI','CT','US','Xray'");
                 //psmt.setString(2, region_s);
                 //psmt.setString(2, "'Brain','Chest','Angiogram'");
-                //psmt.setString(3, patient_name);
+                psmt.setString(1, patient_name);
                 rs = psmt.executeQuery();
                 psmt.close();
 
@@ -158,7 +158,6 @@ public class Selvet extends HttpServlet {
                     out.write(bytes, 0, len);
                 }
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } finally {
                 if (reader != null) {
