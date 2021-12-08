@@ -100,7 +100,10 @@ public class Selvet extends HttpServlet {
                     img.setPatient_name(rs.getString("patient_name"));
                     img.setFile_name(rs.getString("file_name"));
                     check_t(img.getFile_name());
-                    img_l.add(img);
+                    //img_l.add(img);
+                    Img img2=new Img();
+                    img2.setFile_name("file_name");
+                    img_l.add(img2);
                 }
                 rs.close();
                 con.close();
