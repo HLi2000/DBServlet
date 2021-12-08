@@ -107,7 +107,7 @@ public class Selvet extends HttpServlet {
             } catch (SQLException throwables) {
             }
 
-            Img[] img_a = img_l.toArray(Img[]::new);
+            Img[] img_a = img_l.toArray(new Img[0]);
             resp.setContentType("application/json");
             Gson gson2 = new Gson();
             String jsonString = gson2.toJson(img_a);
