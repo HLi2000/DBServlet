@@ -95,7 +95,7 @@ public class Selvet extends HttpServlet {
                     psmt.close();
                 }
 
-                String sql = "SELECT * FROM imgs WHERE modality IN ('MRI','CT','US','Xray') AND region IN ('Brain','Chest','Angiogram') AND patient_name='A A'";
+                String sql = "SELECT * FROM imgs WHERE patient_name='A A'";
                 PreparedStatement psmt = con.prepareStatement(sql);
                 //psmt.setString(1, modality_s);
                 //psmt.setString(1, "'MRI','CT','US','Xray'");
@@ -142,10 +142,8 @@ public class Selvet extends HttpServlet {
             String FilePath="./img_ts/"+fileName;
 
             //制定浏览器头
-            //在下载的时候这里是英文是没有问题的
             resp.setHeader("content-disposition", "attachment;fileName="+fileName);
-            //如果图片名称是中文需要设置转码
-            resp.setHeader("content-disposition", "attachment;fileName="+ URLEncoder.encode(fileName, "UTF-8"));
+
             InputStream reader = null;
             OutputStream out = null;
             byte[] bytes = new byte[1024];
