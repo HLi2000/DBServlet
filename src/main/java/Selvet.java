@@ -109,7 +109,7 @@ public class Selvet extends HttpServlet {
             resp.setContentType("application/json");
             Gson gson2 = new Gson();
             String jsonString = gson2.toJson(img_a);
-            resp.getWriter().write(jsonString);
+            resp.getWriter().write(modality_a[0]);
         }
         else if (path.equals("/thumbnail")) {
 
@@ -131,7 +131,7 @@ public class Selvet extends HttpServlet {
         String fileAbsolutePath="./imgs/"+filename;
         try {
             Opener opener = new Opener();
-            ImagePlus imp = opener.openImage(fileAbsolutePath);
+            ImagePlus imp = IJ.openImage(fileAbsolutePath);
             ImageProcessor ip = imp.getProcessor();
             StackProcessor sp = new StackProcessor(imp.getStack(), ip);
 
@@ -172,7 +172,12 @@ public class Selvet extends HttpServlet {
             ImageStack resizedStack = sp.resize(100, 100, true);
             imp.setStack(null, resizedStack);
 
-            String saveAsFilePath="./img_ts/"+filename;
+            StringBuffer filePath = new StringBuffer(filename);
+            filePath.replace(filePath.lastIndexOf("."),
+                    filePath.length(), ".jpg");
+            String filename2 = filePath.toString();
+
+            String saveAsFilePath="./img_ts/"+filename2;
             IJ.save(imp, saveAsFilePath);
         } catch (Exception e) {
             e.printStackTrace();
