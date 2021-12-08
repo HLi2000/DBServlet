@@ -118,6 +118,11 @@ public class Selvet extends HttpServlet {
                     img2.setFile_name("file_name1");
                     img_l.add(img2);
                 }
+
+                Img img2=new Img();
+                img2.setFile_name(sql);
+                img_l.add(img2);
+
                 rs.close();
                 con.close();
             } catch (SQLException throwables) {
