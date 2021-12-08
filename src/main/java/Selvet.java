@@ -49,13 +49,20 @@ public class Selvet extends HttpServlet {
             try {
                 Class.forName("org.postgresql.Driver");
             } catch (Exception e) {
+            }
+
+            Connection con = null;
+            try {
+                con = DriverManager.getConnection(dbUrl);
+            } catch (SQLException e) {
+                e.printStackTrace();
                 Img img2=new Img();
-                img2.setFile_name("!！");
+                img2.setFile_name("!!!");
                 img_l.add(img2);
             }
 
             try {
-                Connection con = DriverManager.getConnection(dbUrl);
+                //Connection con = DriverManager.getConnection(dbUrl);
                 ResultSet rs;
 
                 String modality_s;
