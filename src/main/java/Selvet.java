@@ -96,7 +96,7 @@ public class Selvet extends HttpServlet {
 
                  */
 
-                /*
+
 
                 String sql = "SELECT * FROM imgs WHERE Patient_name=?";
                 PreparedStatement psmt = con.prepareStatement(sql);
@@ -126,7 +126,7 @@ public class Selvet extends HttpServlet {
                 rs.close();
                 con.close();
 
-                 */
+
             } catch (SQLException throwables) {
                 Img img2=new Img();
                 img2.setFile_name("!");
@@ -134,7 +134,7 @@ public class Selvet extends HttpServlet {
             }
 
             Img img2=new Img();
-            img2.setFile_name("file_name");
+            img2.setFile_name(patient_name);
             img_l.add(img2);
 
             Img[] img_a = img_l.toArray(new Img[0]);
