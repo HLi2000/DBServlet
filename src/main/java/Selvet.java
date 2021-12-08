@@ -83,8 +83,10 @@ public class Selvet extends HttpServlet {
                 else{
                     String sql = "SELECT * FROM imgs WHERE modality IN (?) AND region IN (?) AND patiet_name=?";
                     PreparedStatement psmt = con.prepareStatement(sql);
-                    psmt.setString(1, modality_s);
-                    psmt.setString(2, region_s);
+                    //psmt.setString(1, modality_s);
+                    psmt.setString(1, "'MRI','CT','US','Xray'");
+                    //psmt.setString(2, region_s);
+                    psmt.setString(2, "'Brain','Chest','Angiogram");
                     psmt.setString(3, patient_name);
                     rs = psmt.executeQuery();
                     psmt.close();
@@ -105,11 +107,11 @@ public class Selvet extends HttpServlet {
             } catch (SQLException throwables) {
             }
 
-            Img[] img_a = img_l.toArray(new Img[0]);
+            Img[] img_a = img_l.toArray(Img[]::new);
             resp.setContentType("application/json");
             Gson gson2 = new Gson();
             String jsonString = gson2.toJson(img_a);
-            resp.getWriter().write(modality_a[0]);
+            resp.getWriter().write(jsonString);
         }
         else if (path.equals("/thumbnail")) {
 
