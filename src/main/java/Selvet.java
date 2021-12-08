@@ -44,12 +44,16 @@ public class Selvet extends HttpServlet {
             String[] region_a= searchInfo.getRegion_a();
             String patient_name= searchInfo.getPatient_name();
 
+            List<Img> img_l = new ArrayList<Img>();
+
             try {
                 Class.forName("org.postgresql.Driver");
             } catch (Exception e) {
+                Img img2=new Img();
+                img2.setFile_name("!！");
+                img_l.add(img2);
             }
 
-            List<Img> img_l = new ArrayList<Img>();
             try {
                 Connection con = DriverManager.getConnection(dbUrl);
                 ResultSet rs;
@@ -98,14 +102,14 @@ public class Selvet extends HttpServlet {
 
 
 
-                String sql = "SELECT * FROM imgs WHERE Patient_name=?";
+                String sql = "SELECT * FROM imgs WHERE Patient_name='A A'";
                 PreparedStatement psmt = con.prepareStatement(sql);
                 //psmt.setString(1, modality_s);
                 //psmt.setString(1, "'MRI','CT','US','Xray'");
                 //psmt.setString(2, region_s);
                 //psmt.setString(2, "'Brain','Chest','Angiogram'");
                 //psmt.setString(3, patient_name);
-                psmt.setString(1, patient_name);
+                //psmt.setString(1, patient_name);
                 rs = psmt.executeQuery();
                 psmt.close();
 
