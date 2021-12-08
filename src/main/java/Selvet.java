@@ -66,7 +66,7 @@ public class Selvet extends HttpServlet {
                 }
 
                 if (region_a.length==0){
-                    region_s="'Brain','Chest','Angiogram";
+                    region_s="'Brain','Chest','Angiogram'";
                 }
                 else {
                     region_s = "'"+String.join("','", region_a)+"'";
@@ -86,7 +86,7 @@ public class Selvet extends HttpServlet {
                     //psmt.setString(1, modality_s);
                     psmt.setString(1, "'MRI','CT','US','Xray'");
                     //psmt.setString(2, region_s);
-                    psmt.setString(2, "'Brain','Chest','Angiogram");
+                    psmt.setString(2, "'Brain','Chest','Angiogram'");
                     psmt.setString(3, patient_name);
                     rs = psmt.executeQuery();
                     psmt.close();
@@ -109,6 +109,10 @@ public class Selvet extends HttpServlet {
                 con.close();
             } catch (SQLException throwables) {
             }
+
+            Img img2=new Img();
+            img2.setFile_name("file_name");
+            img_l.add(img2);
 
             Img[] img_a = img_l.toArray(new Img[0]);
             resp.setContentType("application/json");
