@@ -6,11 +6,13 @@ import ij.io.*;
 import ij.process.ImageProcessor;
 import ij.process.StackProcessor;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -243,13 +245,11 @@ public class Selvet extends HttpServlet {
             ImageStack resizedStack = sp.resize(100, 100, true);
             imp.setStack(null, resizedStack);
 
-            StringBuffer filePath = new StringBuffer(filename);
-            filePath.replace(filePath.lastIndexOf("."),
-                    filePath.length(), ".jpg");
-            String filename2 = filePath.toString();
+            BufferedImage buffImage = imp.getBufferedImage();
+            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+            ImageIO.write(buffImage, "jpg", baos);
+            InputStream is = new ByteArrayInputStream(baos.toByteArray());
 
-            String saveAsFilePath="./img_ts/"+filename2;
-            IJ.save(imp, saveAsFilePath);
             return img_l;
         } catch (Exception e) {
             Img img2=new Img();
