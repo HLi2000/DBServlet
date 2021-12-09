@@ -40,10 +40,6 @@ public class Selvet extends HttpServlet {
             SearchInfo searchInfo = gson.fromJson(reqBody, SearchInfo.class);
             String dbUrl = System.getenv("JDBC_DATABASE_URL");
 
-            String[] modality_a= searchInfo.getModality_a();
-            String[] region_a= searchInfo.getRegion_a();
-            String patient_name= searchInfo.getPatient_name();
-
             List<Img> img_l = new ArrayList<Img>();
 
             try {
@@ -57,40 +53,41 @@ public class Selvet extends HttpServlet {
                 PreparedStatement psmt;
                 String sql;
 
-                String modality_s;
-                String region_s;
+                String[] modality_a= searchInfo.getModality_a();
+                String[] region_a= searchInfo.getRegion_a();
+                String patient_name= searchInfo.getPatient_name();
+                String[] modality_all={"MRI","CT","US","Xray"};
+                String[] region_all={"Brain","Chest","Angiogram"};
+                Array modality_aa;
+                Array region_aa;
 
                 if (modality_a.length==0){
-                    modality_s="MRI','CT','US','Xray";
+                    modality_aa=conn.createArrayOf("varchar", modality_all);
                 }
                 else {
-                    modality_s = String.join("','", modality_a);
+                    modality_aa = conn.createArrayOf("varchar", modality_a);
                 }
 
                 if (region_a.length==0){
-                    region_s="Brain','Chest','Angiogram";
+                    region_aa=conn.createArrayOf("varchar", region_all);
                 }
                 else {
-                    region_s = String.join("','", region_a);
+                    region_aa=conn.createArrayOf("varchar", region_a);
                 }
 
                 if (patient_name.equals("")){
                     sql = "SELECT * FROM imgs WHERE modality IN (?) AND region IN (?)";
                     psmt = conn.prepareStatement(sql);
-                    psmt.setString(1, modality_s);
-                    psmt.setString(2, region_s);
+                    psmt.setArray(1, modality_aa);
+                    psmt.setArray(2, region_aa);
                     rs = psmt.executeQuery();
                 }
                 else{
                     sql = "SELECT * FROM imgs WHERE Modality IN (?) AND Region IN (?) AND Patient_name=?";
-                    //String sql = "SELECT * FROM imgs WHERE Patient_name=?";
                     psmt = conn.prepareStatement(sql);
-                    psmt.setString(1, modality_s);
-                    //psmt.setString(1, "'MRI','CT','US','Xray'");
-                    psmt.setString(2, region_s);
-                    //psmt.setString(2, "'Brain','Chest','Angiogram'");
+                    psmt.setArray(1, modality_aa);
+                    psmt.setArray(2, region_aa);
                     psmt.setString(3, patient_name);
-                    //psmt.setString(1, patient_name);
                     sql = psmt.toString();
                     rs = psmt.executeQuery();
                 }
