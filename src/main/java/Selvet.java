@@ -135,7 +135,7 @@ public class Selvet extends HttpServlet {
             }
 
             Img img2=new Img();
-            img2.setFile_name(patient_name);
+            img2.setFile_name(dbUrl);
             img_l.add(img2);
 
             Img[] img_a = img_l.toArray(new Img[0]);
