@@ -52,7 +52,7 @@ public class Selvet extends HttpServlet {
             }
 
             try {
-                Connection con = DriverManager.getConnection(dbUrl);
+                Connection conn = DriverManager.getConnection(dbUrl);
                 ResultSet rs;
                 PreparedStatement psmt;
                 String sql;
@@ -76,7 +76,7 @@ public class Selvet extends HttpServlet {
 
                 if (patient_name.equals("")){
                     sql = "SELECT * FROM imgs WHERE modality IN (?) AND region IN (?)";
-                    psmt = con.prepareStatement(sql);
+                    psmt = conn.prepareStatement(sql);
                     psmt.setString(1, modality_s);
                     psmt.setString(2, region_s);
                     rs = psmt.executeQuery();
@@ -84,13 +84,14 @@ public class Selvet extends HttpServlet {
                 else{
                     sql = "SELECT * FROM imgs WHERE Modality IN (?) AND Region IN (?) AND Patient_name=?";
                     //String sql = "SELECT * FROM imgs WHERE Patient_name=?";
-                    psmt = con.prepareStatement(sql);
+                    psmt = conn.prepareStatement(sql);
                     psmt.setString(1, modality_s);
                     //psmt.setString(1, "'MRI','CT','US','Xray'");
                     psmt.setString(2, region_s);
                     //psmt.setString(2, "'Brain','Chest','Angiogram'");
                     psmt.setString(3, patient_name);
                     //psmt.setString(1, patient_name);
+                    sql = psmt.toString();
                     rs = psmt.executeQuery();
                 }
 
@@ -111,7 +112,7 @@ public class Selvet extends HttpServlet {
 
                 rs.close();
                 psmt.close();
-                con.close();
+                conn.close();
 
             } catch (SQLException e) {
                 Img img2=new Img();
