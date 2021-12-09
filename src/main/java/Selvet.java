@@ -250,10 +250,12 @@ public class Selvet extends HttpServlet {
 
             String saveAsFilePath="./img_ts/"+filename2;
             IJ.save(imp, saveAsFilePath);
+            return img_l;
         } catch (Exception e) {
             Img img2=new Img();
             img2.setFile_name(e.toString());
             img_l.add(img2);
+            return img_l;
         }
     }
 }
