@@ -1,22 +1,11 @@
 import com.google.gson.Gson;
-import ij.IJ;
-import ij.ImagePlus;
-import ij.ImageStack;
-import ij.io.*;
-import ij.process.ImageProcessor;
-import ij.process.StackProcessor;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -36,6 +25,20 @@ public class Selvet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
+        if (path.equals("/search")) {
+            String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            Gson gson = new Gson();
+            SearchInfo searchInfo = gson.fromJson(reqBody, SearchInfo.class);
+
+            SearchDao searchDao=new SearchDao();
+            Img[] img_a = searchDao.search(searchInfo);
+
+            resp.setContentType("application/json");
+            Gson gson2 = new Gson();
+            String jsonString = gson2.toJson(img_a);
+            resp.getWriter().write(jsonString);
+        }
+        /*
         if (path.equals("/search")) {
             String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             Gson gson = new Gson();
@@ -90,7 +93,7 @@ public class Selvet extends HttpServlet {
                     psmt.setArray(1, modality_aa);
                     psmt.setArray(2, region_aa);
                     psmt.setString(3, patient_name);
-                    sql = psmt.toString();
+                    //sql = psmt.toString();
                     rs = psmt.executeQuery();
                 }
 
@@ -101,7 +104,7 @@ public class Selvet extends HttpServlet {
                     img.setRegion(rs.getString("Region"));
                     img.setPatient_name(rs.getString("Patient_name"));
                     img.setFile_name(rs.getString("File_name"));
-                    img_l=check_t(img.getFile_name(),img_l);
+                    img.setThumbnail(create_t(img.getFile_name()));
                     img_l.add(img);
                 }
 
@@ -121,6 +124,9 @@ public class Selvet extends HttpServlet {
             String jsonString = gson2.toJson(img_a);
             resp.getWriter().write(jsonString);
         }
+
+         */
+        /*
         else if (path.equals("/thumbnail")) {
             String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             StringBuffer filePath = new StringBuffer(reqBody);
@@ -155,6 +161,7 @@ public class Selvet extends HttpServlet {
                     out.close();
             }
         }
+
         else if (path.equals("/img")) {
             String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             StringBuffer filePath = new StringBuffer(reqBody);
@@ -189,8 +196,35 @@ public class Selvet extends HttpServlet {
                     out.close();
             }
         }
-    }
 
+         */
+        else if (path.equals("/img")) {
+            String fileName = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            String FilePath="./imgs/"+fileName;
+
+            ImgDao imgDao=new ImgDao();
+            InputStream is=imgDao.open_img(fileName);
+
+            OutputStream os = null;
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            try {
+                os = resp.getOutputStream();
+                while ((len = is.read(bytes)) > 0) {
+                    os.write(bytes, 0, len);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (is != null) {
+                    is.close();
+                }
+                if (os != null)
+                    os.close();
+            }
+        }
+    }
+    /*
     public List<Img> check_t(String filename,List<Img> img_l) {
         if(new File("./img_ts/"+filename).isFile()){
             return img_l;
@@ -200,8 +234,9 @@ public class Selvet extends HttpServlet {
             return img_l;
         }
     }
-
-    public List<Img> create_t(String filename,List<Img> img_l) {
+     */
+    /*
+    public InputStream create_t(String filename) {
         String fileAbsolutePath="./imgs/"+filename;
         try {
             ImagePlus imp = IJ.openImage(fileAbsolutePath);
@@ -250,12 +285,27 @@ public class Selvet extends HttpServlet {
             ImageIO.write(buffImage, "jpg", baos);
             InputStream is = new ByteArrayInputStream(baos.toByteArray());
 
-            return img_l;
+            return is;
         } catch (Exception e) {
-            Img img2=new Img();
-            img2.setFile_name(e.toString());
-            img_l.add(img2);
-            return img_l;
+            return null;
         }
     }
+
+    public InputStream open_img(String filename) {
+        String fileAbsolutePath="./imgs/"+filename;
+        try {
+            ImagePlus imp = IJ.openImage(fileAbsolutePath);
+
+            BufferedImage buffImage = imp.getBufferedImage();
+            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+            ImageIO.write(buffImage, "jpg", baos);
+            InputStream is = new ByteArrayInputStream(baos.toByteArray());
+
+            return is;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+     */
 }

@@ -1,3 +1,4 @@
+import java.io.InputStream;
 import java.io.Serializable;
 
 public class Img implements Serializable {
@@ -6,6 +7,7 @@ public class Img implements Serializable {
     private String region="";
     private String patient_name="";
     private String file_name="";
+    private InputStream thumbnail=null;
 
 //    public Img(String id, String region, String modality, String file_name){
 //        this.id=id;
@@ -34,6 +36,10 @@ public class Img implements Serializable {
         return file_name;
     }
 
+    public InputStream getThumbnail() {
+        return thumbnail;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -52,5 +58,9 @@ public class Img implements Serializable {
 
     public void setFile_name(String file_name) {
         this.file_name = file_name;
+    }
+
+    public void setThumbnail(InputStream thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }
