@@ -51,18 +51,8 @@ public class Selvet extends HttpServlet {
             } catch (Exception e) {
             }
 
-            Connection con = null;
             try {
-                con = DriverManager.getConnection(dbUrl);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                Img img2=new Img();
-                img2.setFile_name("!!!");
-                img_l.add(img2);
-            }
-
-            try {
-                //Connection con = DriverManager.getConnection(dbUrl);
+                Connection con = DriverManager.getConnection(dbUrl);
                 ResultSet rs;
 
                 String modality_s;
@@ -108,15 +98,14 @@ public class Selvet extends HttpServlet {
                  */
 
 
-
-                String sql = "SELECT * FROM imgs WHERE Patient_name='A A'";
+                String sql = "SELECT * FROM imgs WHERE Patient_name=?";
                 PreparedStatement psmt = con.prepareStatement(sql);
                 //psmt.setString(1, modality_s);
                 //psmt.setString(1, "'MRI','CT','US','Xray'");
                 //psmt.setString(2, region_s);
                 //psmt.setString(2, "'Brain','Chest','Angiogram'");
                 //psmt.setString(3, patient_name);
-                //psmt.setString(1, patient_name);
+                psmt.setString(1, patient_name);
                 rs = psmt.executeQuery();
                 psmt.close();
 
@@ -138,9 +127,10 @@ public class Selvet extends HttpServlet {
                 con.close();
 
 
-            } catch (SQLException throwables) {
+            } catch (SQLException e) {
+                //e.toString();
                 Img img2=new Img();
-                img2.setFile_name("!");
+                img2.setFile_name(e.toString());
                 img_l.add(img2);
             }
 
