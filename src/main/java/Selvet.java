@@ -62,17 +62,17 @@ public class Selvet extends HttpServlet {
                 Array region_aa;
 
                 if (modality_a.length==0){
-                    modality_aa=conn.createArrayOf("varchar", modality_all);
+                    modality_aa=conn.createArrayOf("char", modality_all);
                 }
                 else {
-                    modality_aa = conn.createArrayOf("varchar", modality_a);
+                    modality_aa = conn.createArrayOf("char", modality_a);
                 }
 
                 if (region_a.length==0){
-                    region_aa=conn.createArrayOf("varchar", region_all);
+                    region_aa=conn.createArrayOf("char", region_all);
                 }
                 else {
-                    region_aa=conn.createArrayOf("varchar", region_a);
+                    region_aa=conn.createArrayOf("char", region_a);
                 }
 
                 if (patient_name.equals("")){
