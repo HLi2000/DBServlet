@@ -62,28 +62,28 @@ public class Selvet extends HttpServlet {
                 Array region_aa;
 
                 if (modality_a.length==0){
-                    modality_aa=conn.createArrayOf("char", modality_all);
+                    modality_aa=conn.createArrayOf("varchar", modality_all);
                 }
                 else {
-                    modality_aa = conn.createArrayOf("char", modality_a);
+                    modality_aa = conn.createArrayOf("varchar", modality_a);
                 }
 
                 if (region_a.length==0){
-                    region_aa=conn.createArrayOf("char", region_all);
+                    region_aa=conn.createArrayOf("varchar", region_all);
                 }
                 else {
-                    region_aa=conn.createArrayOf("char", region_a);
+                    region_aa=conn.createArrayOf("varchar", region_a);
                 }
 
                 if (patient_name.equals("")){
-                    sql = "SELECT * FROM imgs WHERE modality IN (?) AND region IN (?)";
+                    sql = "SELECT * FROM imgs WHERE modality = ANY (?) AND region = ANY (?)";
                     psmt = conn.prepareStatement(sql);
                     psmt.setArray(1, modality_aa);
                     psmt.setArray(2, region_aa);
                     rs = psmt.executeQuery();
                 }
                 else{
-                    sql = "SELECT * FROM imgs WHERE Modality IN (?) AND Region IN (?) AND Patient_name=?";
+                    sql = "SELECT * FROM imgs WHERE Modality = ANY (?) AND Region = ANY (?) AND Patient_name=?";
                     psmt = conn.prepareStatement(sql);
                     psmt.setArray(1, modality_aa);
                     psmt.setArray(2, region_aa);
