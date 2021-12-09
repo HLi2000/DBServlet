@@ -92,10 +92,6 @@ public class Selvet extends HttpServlet {
                     rs = psmt.executeQuery();
                 }
 
-                Img img2=new Img();
-                img2.setFile_name(sql);
-                img_l.add(img2);
-
                 while (rs.next()) {
                     Img img=new Img();
                     img.setId(rs.getInt("Id"));
@@ -116,10 +112,6 @@ public class Selvet extends HttpServlet {
                 img2.setFile_name(e.toString());
                 img_l.add(img2);
             }
-
-            Img img2=new Img();
-            img2.setFile_name(dbUrl);
-            img_l.add(img2);
 
             Img[] img_a = img_l.toArray(new Img[0]);
             resp.setContentType("application/json");
@@ -208,7 +200,6 @@ public class Selvet extends HttpServlet {
     public void create_t(String filename) {
         String fileAbsolutePath="./imgs/"+filename;
         try {
-            Opener opener = new Opener();
             ImagePlus imp = IJ.openImage(fileAbsolutePath);
             ImageProcessor ip = imp.getProcessor();
             StackProcessor sp = new StackProcessor(imp.getStack(), ip);
@@ -258,7 +249,6 @@ public class Selvet extends HttpServlet {
             String saveAsFilePath="./img_ts/"+filename2;
             IJ.save(imp, saveAsFilePath);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
