@@ -53,7 +53,7 @@ public class Selvet extends HttpServlet {
 
             try {
                 Connection con = DriverManager.getConnection(dbUrl);
-                ResultSet rs;
+                //ResultSet rs;
 
                 String modality_s;
                 String region_s;
@@ -106,7 +106,7 @@ public class Selvet extends HttpServlet {
                 //psmt.setString(2, "'Brain','Chest','Angiogram'");
                 //psmt.setString(3, patient_name);
                 psmt.setString(1, patient_name);
-                rs = psmt.executeQuery();
+                ResultSet rs = psmt.executeQuery();
                 psmt.close();
 
                 while (rs.next()) {
