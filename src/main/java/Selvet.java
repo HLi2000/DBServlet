@@ -99,7 +99,7 @@ public class Selvet extends HttpServlet {
                     img.setRegion(rs.getString("Region"));
                     img.setPatient_name(rs.getString("Patient_name"));
                     img.setFile_name(rs.getString("File_name"));
-                    check_t(img.getFile_name());
+                    img_l=check_t(img.getFile_name(),img_l);
                     img_l.add(img);
                 }
 
@@ -189,15 +189,17 @@ public class Selvet extends HttpServlet {
         }
     }
 
-    public void check_t(String filename) {
+    public List<Img> check_t(String filename,List<Img> img_l) {
         if(new File("./img_ts/"+filename).isFile()){
+            return img_l;
         }
         else{
-            create_t(filename);
+            img_l=create_t(filename,img_l);
+            return img_l;
         }
     }
 
-    public void create_t(String filename) {
+    public List<Img> create_t(String filename,List<Img> img_l) {
         String fileAbsolutePath="./imgs/"+filename;
         try {
             ImagePlus imp = IJ.openImage(fileAbsolutePath);
@@ -249,6 +251,9 @@ public class Selvet extends HttpServlet {
             String saveAsFilePath="./img_ts/"+filename2;
             IJ.save(imp, saveAsFilePath);
         } catch (Exception e) {
+            Img img2=new Img();
+            img2.setFile_name(e.toString());
+            img_l.add(img2);
         }
     }
 }
