@@ -38,6 +38,31 @@ public class Selvet extends HttpServlet {
             String jsonString = gson2.toJson(img_a);
             resp.getWriter().write(jsonString);
         }
+        else if (path.equals("/thumbnail")) {
+            String fileName = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+            String FilePath="./imgs/"+fileName;
+
+            SearchDao searchDao=new SearchDao();
+            InputStream is=searchDao.create_thumbnail(fileName);
+
+            OutputStream os = null;
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            try {
+                os = resp.getOutputStream();
+                while ((len = is.read(bytes)) > 0) {
+                    os.write(bytes, 0, len);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (is != null) {
+                    is.close();
+                }
+                if (os != null)
+                    os.close();
+            }
+        }
         /*
         if (path.equals("/search")) {
             String reqBody = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));

@@ -70,7 +70,7 @@ public class SearchDao {
                 img.setRegion(rs.getString("Region"));
                 img.setPatient_name(rs.getString("Patient_name"));
                 img.setFile_name(rs.getString("File_name"));
-                img.setThumbnail(create_t(img.getFile_name()));
+                //img.setThumbnail(create_t(img.getFile_name()));
                 img_l.add(img);
             }
 
@@ -89,7 +89,7 @@ public class SearchDao {
         return img_a;
     }
 
-    public InputStream create_t(String filename) {
+    public InputStream create_thumbnail(String filename) {
         String fileAbsolutePath="./imgs/"+filename;
         try {
             ImagePlus imp = IJ.openImage(fileAbsolutePath);
