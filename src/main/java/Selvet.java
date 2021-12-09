@@ -61,17 +61,17 @@ public class Selvet extends HttpServlet {
                 String region_s;
 
                 if (modality_a.length==0){
-                    modality_s="MRI,CT,US,Xray";
+                    modality_s="MRI','CT','US','Xray";
                 }
                 else {
-                    modality_s = String.join(",", modality_a);
+                    modality_s = String.join("','", modality_a);
                 }
 
                 if (region_a.length==0){
-                    region_s="Brain,Chest,Angiogram";
+                    region_s="Brain','Chest','Angiogram";
                 }
                 else {
-                    region_s = String.join(",", region_a);
+                    region_s = String.join("','", region_a);
                 }
 
                 if (patient_name.equals("")){
